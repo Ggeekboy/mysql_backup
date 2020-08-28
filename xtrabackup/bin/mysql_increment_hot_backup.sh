@@ -14,6 +14,8 @@ user=`sed '/^user=/!d;s/.*=//' $conf_file`
 password=`sed '/^password=/!d;s/.*=//' $conf_file`
 # mysql 备份目录
 backup_dir=`sed '/^backup_dir=/!d;s/.*=//' $conf_file`
+# percona-xtrabackup要链接的mysql_socket路径
+mysql_socket=`sed '/^mysql_socket=/!d;s/.*=//' $conf_file`
 # percona-xtrabackup 备份软件路径
 xtrabackup_dir=`sed '/^xtrabackup_dir=/!d;s/.*=//' $conf_file`
 # 全备是在一周的第几天
@@ -54,6 +56,7 @@ function full_backup() {
     --user=$user \
     --password=$password \
     --no-timestamp \
+	--socket=$mysql_socket \
     $backup_dir/$backup_folder > $log_dir/${backup_folder}.log 2>&1
   return $?
 }
@@ -72,6 +75,7 @@ function increment_backup() {
     --password=$password \
     --no-timestamp \
     --incremental \
+	--socket=$mysql_socket \
     $backup_dir/$backup_folder \
     --incremental-basedir=$backup_dir/$incr_base_folder > $log_dir/${backup_folder}.log 2>&1
   return $?
@@ -156,6 +160,7 @@ function test_conf_file() {
   if [ ! -n "$user" ]; then echo 'fail: configure file user not set'; exit 2; fi
   if [ ! -n "$password" ]; then echo 'fail: configure file password not set'; exit 2; fi
   if [ ! -n "$backup_dir" ]; then echo 'fail: configure file backup_dir not set'; exit 2; fi
+  if [ ! -n "$mysql_socket" ]; then echo 'fail: configure file mysql_socket not set'; exit 2; fi
   if [ ! -n "$full_backup_week_day" ]; then echo 'fail: configure file full_backup_week_day not set'; exit 2; fi
   if [ ! -n "$full_backup_prefix" ]; then echo 'fail: configure file full_backup_prefix not set'; exit 2; fi
   if [ ! -n "$increment_prefix" ]; then echo 'fail: configure file increment_prefix not set'; exit 2; fi

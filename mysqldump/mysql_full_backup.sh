@@ -1,7 +1,9 @@
 #!/bin/bash
 #
 # Function：实现mysql完全备份
+# Author : menglc
 # Notes：
+# Date   : 2020-08-27
 
 # 定义备份使用到的相关变量（需要根据用户实际环境做相应的修改）
 backup_data=/backup/mysql/full

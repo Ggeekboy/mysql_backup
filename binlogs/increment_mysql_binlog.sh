@@ -1,9 +1,12 @@
 #!/bin/bash
 #
-# Function：实现mysql完全备份
+# Function：实现mysql二进制文件备份，基于mysqldump备份出来的备份文件
+# Author : menglc
 # Notes：
+# Date   : 2020-08-27
 
 # 定义备份使用到的相关变量（需要根据用户实际环境做相应的修改）
+#mysqldump备份的备份文件所在的目录
 backup_data=/backup/mysql/full
 backup_binlog=/backup/mysql/logbin/$(date +"%F")
 mysql_binlog=/mysql/binlogs
